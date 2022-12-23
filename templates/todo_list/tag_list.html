@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Tad list
+    <a href="{% url 'todo_list:tag_form' %}" class="btn btn-primary link-to-page">
+      Add tag
+    </a>
+  </h1>
+  <hr>
+  
+  {% if tag_list %}
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Update</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+
+      {% for tag in tag_list.all %}
+        <tbody>
+          <tr>
+            <th scope="row">{{ tag.id }}</th>
+            <td>
+              {{ tag.name }}
+            </td>
+            <td>
+              <a href="{% url 'todo_list:tag_form' %}">Update</a>
+            </td>
+            <td>
+              <a href="{% url 'todo_list:tag_confirm_delete' %}">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>There are no tags</p>
+  {% endif %}
+{% endblock %}
