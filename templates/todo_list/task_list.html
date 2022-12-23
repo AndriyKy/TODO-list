@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    TODO list
+    <a href="{% url 'todo_list:task-create' %}" class="btn btn-primary link-to-page">
+      Add task
+    </a>
+  </h1>
+  <br>
+
+  {% if task_list %}
+    {% for task in task_list %}
+      <h3>
+        <b>{{ task.content }} </b> |
+        {% if task.is_done %}Done{% else %}Not done{% endif %}
+
+        {% if task.is_done %}
+          <a href="{% url 'todo_list:complete-task' task.id %}" class="btn btn-secondary btn-sm link-to-page">
+            Undo
+          </a>
+        {% else %}
+          <a href="{% url 'todo_list:complete-task' task.id %}" class="btn btn-success link-to-page">
+            Complete
+          </a>
+        {% endif %}
+      </h3>
+      <p>
+        Created: {{ task.created_at|date:"F t, Y, P" }}
+        {% if task.deadline %}
+          <br>Deadline:
+          {{ task.deadline|date:"F t, Y, P" }}
+        {% endif %}
+      </p>
+      <h3>
+        <b>Tags:</b>
+        {% if task.tags.all %}
+          {% for tag in task.tags.all %}
+            {{ tag }}
+          {% endfor %}
+          
+        {% endif %}
+      </h3>
+      <h3>
+        <a href="{% url 'todo_list:task-update' task.id %}">Update</a>
+        <a href="{% url 'todo_list:task-delete' task.id %}">Delete</a>
+      </h3>
+      <hr>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
